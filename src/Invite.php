@@ -15,12 +15,12 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use CocaCoffee\LaravelInvite\Events\RelationAttached;
-use CocaCoffee\LaravelInvite\Events\RelationAttaching;
-use CocaCoffee\LaravelInvite\Events\RelationDetached;
-use CocaCoffee\LaravelInvite\Events\RelationDetaching;
-use CocaCoffee\LaravelInvite\Events\RelationToggled;
-use CocaCoffee\LaravelInvite\Events\RelationToggling;
+use SanKnight\LaravelInvite\Events\RelationAttached;
+use SanKnight\LaravelInvite\Events\RelationAttaching;
+use SanKnight\LaravelInvite\Events\RelationDetached;
+use SanKnight\LaravelInvite\Events\RelationDetaching;
+use SanKnight\LaravelInvite\Events\RelationToggled;
+use SanKnight\LaravelInvite\Events\RelationToggling;
 use stdClass;
 
 /**
