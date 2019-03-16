@@ -33,25 +33,25 @@
 You can install the package using composer
 
 ```sh
-$ composer require overtrue/laravel-follow -vvv
+$ composer require cocacoffee/laravel-invite -vvv
 ```
 
 Then add the service provider to `config/app.php`
 
 ```php
-Overtrue\LaravelFollow\FollowServiceProvider::class
+SanKnight\LaravelInvite\InviteServiceProvider::class
 ```
 
 Publish the migrations file:
 
 ```sh
-$ php artisan vendor:publish --provider='Overtrue\LaravelFollow\FollowServiceProvider' --tag="migrations"
+$ php artisan vendor:publish --provider='SanKnight\LaravelInvite\InviteServiceProvider' --tag="migrations"
 ```
 
 As optional if you want to modify the default configuration, you can publish the configuration file:
  
 ```sh
-$ php artisan vendor:publish --provider='Overtrue\LaravelFollow\FollowServiceProvider' --tag="config"
+$ php artisan vendor:publish --provider='SanKnight\LaravelInvite\InviteServiceProvider' --tag="config"
 ```
 
 And create tables:
