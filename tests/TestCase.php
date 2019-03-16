@@ -1,15 +1,15 @@
 <?php
 
 /*
- * This file is part of the overtrue/laravel-follow
+ * This file is part of the cocacoffee/laravel-invite
  *
- * (c) overtrue <i@overtrue.me>
+ * (c) SanKnight <cocacoffee@vip.qq.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
-namespace Overtrue\LaravelFollow\Test;
+namespace SanKnight\LaravelInvite\Test;
 
 use Illuminate\Filesystem\Filesystem;
 
@@ -43,11 +43,11 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         parent::setUp();
 
         if (empty($this->config)) {
-            $this->config = require __DIR__.'/../config/follow.php';
+            $this->config = require __DIR__.'/../config/invite.php';
         }
 
-        $this->app['config']->set('follow', $this->config);
-        $this->app['config']->set('follow.user_model', User::class);
+        $this->app['config']->set('invite', $this->config);
+        $this->app['config']->set('invite.user_model', User::class);
 
         $this->migrate();
         $this->seed();
@@ -61,15 +61,15 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         $fileSystem = new Filesystem();
 
         $fileSystem->copy(
-            __DIR__.'/../database/migrations/2018_06_29_032244_create_laravel_follow_tables.php',
-            __DIR__.'/database/migrations/create_laravel_follow_tables.php'
+            __DIR__.'/../database/migrations/2019_03_16_032244_create_laravel_invite_tables.php',
+            __DIR__.'/database/migrations/create_laravel_invite_tables.php'
         );
 
         foreach ($fileSystem->files(__DIR__.'/database/migrations') as $file) {
             $fileSystem->requireOnce($file);
         }
 
-        (new \CreateLaravelFollowTables())->up();
+        (new \CreateLaravelInviteTables())->up();
         (new \CreateUsersTable())->up();
         (new \CreateOthersTable())->up();
     }
@@ -78,7 +78,7 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
     {
         parent::tearDown();
 
-        unlink(__DIR__.'/database/migrations/create_laravel_follow_tables.php');
+        unlink(__DIR__.'/database/migrations/create_laravel_invite_tables.php');
     }
 
     /**

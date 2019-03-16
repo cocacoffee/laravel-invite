@@ -1,106 +1,106 @@
 <?php
 
 /*
- * This file is part of the overtrue/laravel-follow
+ * This file is part of the cocacoffee/laravel-invite
  *
- * (c) overtrue <i@overtrue.me>
+ * (c) SanKnight <cocacoffee@vip.qq.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
-namespace Overtrue\LaravelFollow\Test\Traits;
+namespace SanKnight\LaravelInvite\Test\Traits;
 
-use Overtrue\LaravelFollow\Test\Other;
-use Overtrue\LaravelFollow\Test\TestCase;
-use Overtrue\LaravelFollow\Test\User;
+use SanKnight\LaravelInvite\Test\Other;
+use SanKnight\LaravelInvite\Test\TestCase;
+use SanKnight\LaravelInvite\Test\User;
 
-class CanFollowTest extends TestCase
+class CanInviteTest extends TestCase
 {
-    public function test_user_can_follow_by_id()
+    public function test_user_can_invite_by_id()
     {
         $user1 = User::find(1);
         $user2 = User::find(2);
 
-        $user1->follow($user2->id);
+        $user1->invite($user2->id);
 
-        $this->assertCount(1, $user1->followings);
+        $this->assertCount(1, $user1->inviteings);
     }
 
-    public function test_user_can_follow_multiple_users()
+    public function test_user_can_invite_multiple_users()
     {
         $user1 = User::find(1);
         $user2 = User::find(2);
         $user3 = User::find(3);
 
-        $user1->follow([$user2->id, $user3->id]);
+        $user1->invite([$user2->id, $user3->id]);
 
-        $this->assertCount(2, $user1->followings);
+        $this->assertCount(2, $user1->inviteings);
     }
 
-    public function test_unfollow_user()
+    public function test_uninvite_user()
     {
         $user1 = User::find(1);
         $user2 = User::find(2);
 
-        $user1->follow($user2->id);
-        $this->assertCount(1, $user2->followers);
-        $user1->unfollow($user2->id);
-        $this->assertCount(0, $user1->followings);
+        $user1->invite($user2->id);
+        $this->assertCount(1, $user2->inviteers);
+        $user1->uninvite($user2->id);
+        $this->assertCount(0, $user1->inviteings);
     }
 
-    public function test_is_following()
+    public function test_is_inviteing()
     {
         $user1 = User::find(1);
         $user2 = User::find(2);
 
-        $user1->follow($user2->id);
+        $user1->invite($user2->id);
 
-        $this->assertTrue($user1->isFollowing($user2->id));
+        $this->assertTrue($user1->isInviteing($user2->id));
     }
 
-    public function test_user_can_follow_other_by_id()
+    public function test_user_can_invite_other_by_id()
     {
         $user = User::find(1);
         $other = Other::find(1);
 
-        $user->follow($other);
+        $user->invite($other);
 
-        $this->assertCount(1, $user->followings(Other::class)->get());
+        $this->assertCount(1, $user->inviteings(Other::class)->get());
     }
 
-    public function test_unfollow_other()
+    public function test_uninvite_other()
     {
         $user = User::find(1);
         $other = Other::find(1);
 
-        $user->follow($other);
-        $user->unfollow($other);
+        $user->invite($other);
+        $user->uninvite($other);
 
-        $this->assertCount(0, $user->followings);
+        $this->assertCount(0, $user->inviteings);
     }
 
-    public function test_is_following_other()
+    public function test_is_inviteing_other()
     {
         $user = User::find(1);
         $other = Other::find(1);
 
-        $user->follow($other);
+        $user->invite($other);
 
-        $this->assertTrue($user->isFollowing($other));
+        $this->assertTrue($user->isInviteing($other));
     }
 
-    public function test_following_each_other()
+    public function test_inviteing_each_other()
     {
         $user1 = User::find(1);
         $user2 = User::find(2);
 
-        $user1->follow($user2);
+        $user1->invite($user2);
 
-        $this->assertFalse($user1->areFollowingEachOther($user2));
+        $this->assertFalse($user1->areInviteingEachOther($user2));
 
-        $user2->follow($user1);
-        $this->assertTrue($user1->areFollowingEachOther($user2));
+        $user2->invite($user1);
+        $this->assertTrue($user1->areInviteingEachOther($user2));
     }
 
     public function test_eager_loading()
@@ -108,14 +108,14 @@ class CanFollowTest extends TestCase
         $user1 = User::find(1);
         $user2 = User::find(2);
 
-        $user1->follow($user2);
-        $user2->follow($user1);
+        $user1->invite($user2);
+        $user2->invite($user1);
 
         // eager loading
-        $user2 = User::find(2)->load(['followings', 'followers']);
-        $this->assertTrue($user2->isFollowedBy($user1));
+        $user2 = User::find(2)->load(['inviteings', 'inviteers']);
+        $this->assertTrue($user2->isInvitedBy($user1));
 
         // without eager loading
-        $this->assertTrue($user1->isFollowedBy($user2));
+        $this->assertTrue($user1->isInvitedBy($user2));
     }
 }

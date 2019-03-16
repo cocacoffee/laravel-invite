@@ -1,19 +1,19 @@
 <?php
 
 /*
- * This file is part of the overtrue/laravel-follow
+ * This file is part of the cocacoffee/laravel-invite
  *
- * (c) overtrue <i@overtrue.me>
+ * (c) SanKnight <cocacoffee@vip.qq.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
-namespace Overtrue\LaravelFollow;
+namespace SanKnight\LaravelInvite;
 
 use Illuminate\Support\ServiceProvider;
 
-class FollowServiceProvider extends ServiceProvider
+class InviteServiceProvider extends ServiceProvider
 {
     /**
      * Application bootstrap event.
@@ -21,7 +21,7 @@ class FollowServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            realpath(__DIR__.'/../config/follow.php') => config_path('follow.php'),
+            realpath(__DIR__.'/../config/invite.php') => config_path('invite.php'),
         ], 'config');
 
         $this->publishes([
@@ -34,6 +34,6 @@ class FollowServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(realpath(__DIR__.'/../config/follow.php'), 'follow');
+        $this->mergeConfigFrom(realpath(__DIR__.'/../config/invite.php'), 'invite');
     }
 }

@@ -1,32 +1,32 @@
 <?php
 
 /*
- * This file is part of the overtrue/laravel-follow
+ * This file is part of the cocacoffee/laravel-invite
  *
- * (c) overtrue <i@overtrue.me>
+ * (c) SanKnight <cocacoffee@vip.qq.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
-namespace Overtrue\LaravelFollow;
+namespace SanKnight\LaravelInvite;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Overtrue\LaravelFollow\Events\RelationAttached;
-use Overtrue\LaravelFollow\Events\RelationAttaching;
-use Overtrue\LaravelFollow\Events\RelationDetached;
-use Overtrue\LaravelFollow\Events\RelationDetaching;
-use Overtrue\LaravelFollow\Events\RelationToggled;
-use Overtrue\LaravelFollow\Events\RelationToggling;
+use CocaCoffee\LaravelInvite\Events\RelationAttached;
+use CocaCoffee\LaravelInvite\Events\RelationAttaching;
+use CocaCoffee\LaravelInvite\Events\RelationDetached;
+use CocaCoffee\LaravelInvite\Events\RelationDetaching;
+use CocaCoffee\LaravelInvite\Events\RelationToggled;
+use CocaCoffee\LaravelInvite\Events\RelationToggling;
 use stdClass;
 
 /**
- * Class Follow.
+ * Class Invite.
  */
-class Follow
+class Invite
 {
     use SoftDeletes;
 
@@ -72,7 +72,7 @@ class Follow
      */
     public static function isRelationExists(Model $model, $relation, $target, $class = null)
     {
-        $target = self::formatTargets($target, $class ?: config('follow.user_model'));
+        $target = self::formatTargets($target, $class ?: config('invite.user_model'));
 
         if ($model->relationLoaded($relation)) {
             return $model->{$relation}->where('id', head($target->ids))->isNotEmpty();
@@ -169,7 +169,7 @@ class Follow
     {
         return self::formatTargets($targets, $class, [
             'relation' => self::getRelationTypeFromRelation($morph),
-            'created_at' => Carbon::now()->format(config('follow.date_format', 'Y-m-d H:i:s')),
+            'created_at' => Carbon::now()->format(config('invite.date_format', 'Y-m-d H:i:s')),
         ]);
     }
 
@@ -227,6 +227,6 @@ class Follow
      */
     protected static function tablePrefixedField($field)
     {
-        return \sprintf('%s.%s', config('follow.followable_table'), $field);
+        return \sprintf('%s.%s', config('invite.inviteable_table'), $field);
     }
 }

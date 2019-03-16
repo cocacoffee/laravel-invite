@@ -1,71 +1,71 @@
 <?php
 
 /*
- * This file is part of the overtrue/laravel-follow
+ * This file is part of the cocacoffee/laravel-invite
  *
- * (c) overtrue <i@overtrue.me>
+ * (c) SanKnight <cocacoffee@vip.qq.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
-namespace Overtrue\LaravelFollow\Test\Traits;
+namespace SanKnight\LaravelInvite\Test\Traits;
 
-use Overtrue\LaravelFollow\Test\Other;
-use Overtrue\LaravelFollow\Test\TestCase;
-use Overtrue\LaravelFollow\Test\User;
+use SanKnight\LaravelInvite\Test\Other;
+use SanKnight\LaravelInvite\Test\TestCase;
+use SanKnight\LaravelInvite\Test\User;
 
-class CanBeFollowedTest extends TestCase
+class CanBeInvitedTest extends TestCase
 {
-    public function test_user_can_follow_by_id()
+    public function test_user_can_invite_by_id()
     {
         $user1 = User::find(1);
         $user2 = User::find(2);
 
-        $user1->follow($user2->id);
+        $user1->invite($user2->id);
 
-        $this->assertCount(1, $user2->followers);
+        $this->assertCount(1, $user2->inviteers);
     }
 
-    public function test_user_can_follow_multiple_users()
+    public function test_user_can_invite_multiple_users()
     {
         $user1 = User::find(1);
         $user2 = User::find(2);
         $user3 = User::find(3);
 
-        $user1->follow([$user2->id, $user3->id]);
+        $user1->invite([$user2->id, $user3->id]);
 
-        $this->assertCount(1, $user2->followers);
-        $this->assertCount(1, $user3->followers);
+        $this->assertCount(1, $user2->inviteers);
+        $this->assertCount(1, $user3->inviteers);
     }
 
-    public function test_is_followed_by()
+    public function test_is_invited_by()
     {
         $user1 = User::find(1);
         $user2 = User::find(2);
 
-        $user1->follow($user2->id);
+        $user1->invite($user2->id);
 
-        $this->assertTrue($user2->isFollowedBy($user1->id));
+        $this->assertTrue($user2->isInvitedBy($user1->id));
     }
 
-    public function test_user_can_follow_other_by_id()
+    public function test_user_can_invite_other_by_id()
     {
         $user = User::find(1);
         $other = Other::find(1);
 
-        $user->follow($other);
+        $user->invite($other);
 
-        $this->assertCount(1, $other->followers);
+        $this->assertCount(1, $other->inviteers);
     }
 
-    public function test_is_followed_by_user()
+    public function test_is_invited_by_user()
     {
         $user = User::find(1);
         $other = Other::find(1);
 
-        $user->follow($other);
+        $user->invite($other);
 
-        $this->assertTrue($other->isFollowedBy($user));
+        $this->assertTrue($other->isInvitedBy($user));
     }
 }

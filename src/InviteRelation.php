@@ -1,25 +1,25 @@
 <?php
 
 /*
- * This file is part of the overtrue/laravel-follow
+ * This file is part of the cocacoffee/laravel-invite
  *
- * (c) overtrue <i@overtrue.me>
+ * (c) SanKnight <cocacoffee@vip.qq.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
-namespace Overtrue\LaravelFollow;
+namespace SanKnight\LaravelInvite;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use InvalidArgumentException;
+use SanKnight\InvalidArgumentException;
 
 /**
- * Class FollowRelation.
+ * Class InviteRelation.
  */
-class FollowRelation extends Model
+class InviteRelation extends Model
 {
     use SoftDeletes;
 
@@ -31,14 +31,14 @@ class FollowRelation extends Model
     /**
      * @var array
      */
-    protected $with = ['followable'];
+    protected $with = ['inviteable'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function followable()
+    public function inviteable()
     {
-        return $this->morphTo(config('follow.morph_prefix', 'followable'));
+        return $this->morphTo(config('invite.morph_prefix', 'inviteable'));
     }
 
     /**
@@ -49,12 +49,12 @@ class FollowRelation extends Model
      */
     public function scopePopular($query, $type = null)
     {
-        $query->select('followable_id', 'followable_type', \DB::raw('COUNT(*) AS count'))
-                        ->groupBy('followable_id', 'followable_type')
+        $query->select('inviteable_id', 'inviteable_type', \DB::raw('COUNT(*) AS count'))
+                        ->groupBy('inviteable_id', 'inviteable_type')
                         ->orderByDesc('count');
 
         if ($type) {
-            $query->where('followable_type', $this->normalizeFollowableType($type));
+            $query->where('inviteable_type', $this->normalizeInviteableType($type));
         }
 
         return $query;
@@ -66,7 +66,7 @@ class FollowRelation extends Model
     public function getTable()
     {
         if (!$this->table) {
-            $this->table = config('follow.followable_table', 'followables');
+            $this->table = config('invite.inviteable_table', 'inviteables');
         }
 
         return parent::getTable();
@@ -87,7 +87,7 @@ class FollowRelation extends Model
      *
      * @return string
      */
-    protected function normalizeFollowableType($type)
+    protected function normalizeInviteableType($type)
     {
         $morphMap = Relation::morphMap();
 
@@ -99,12 +99,12 @@ class FollowRelation extends Model
             return $type;
         }
 
-        $namespace = config('follow.model_namespace', 'App');
+        $namespace = config('invite.model_namespace', 'App');
 
         $modelName = $namespace.'\\'.studly_case($type);
 
         if (!class_exists($modelName)) {
-            throw new InvalidArgumentException("Model {$modelName} not exists. Please check your config 'follow.model_namespace'.");
+            throw new InvalidArgumentException("Model {$modelName} not exists. Please check your config 'invite.model_namespace'.");
         }
 
         return $modelName;

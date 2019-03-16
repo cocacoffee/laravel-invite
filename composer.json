@@ -1,5 +1,5 @@
 {
-    "name": "overtrue/laravel-follow",
+    "name": "cocacoffee/laravel-invite",
     "description": "Laravel 5 User Based System",
     "require": {
         "php": ">=7.0"
@@ -12,24 +12,24 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "overtrue",
-            "email": "i@overtrue.me"
+            "name": "cocacoffee",
+            "email": "cocacoffee@vip.qq.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "Overtrue\\LaravelFollow\\": "src/"
+            "SanKnight\\LaravelInvite\\": "src/"
         }
     },
     "autoload-dev": {
       "psr-4": {
-          "Overtrue\\LaravelFollow\\Test\\": "tests"
+          "SanKnight\\LaravelInvite\\Test\\": "tests"
       }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Overtrue\\LaravelFollow\\FollowServiceProvider"
+                "SanKnight\\LaravelInvite\\InviteServiceProvider"
             ]
         }
     }

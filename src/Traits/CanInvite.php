@@ -1,25 +1,25 @@
 <?php
 
 /*
- * This file is part of the overtrue/laravel-follow
+ * This file is part of the cocacoffee/laravel-invite
  *
- * (c) overtrue <i@overtrue.me>
+ * (c) SanKnight <cocacoffee@vip.qq.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
-namespace Overtrue\LaravelFollow\Traits;
+namespace SanKnight\LaravelInvite\Traits;
 
-use Overtrue\LaravelFollow\Follow;
+use SanKnight\LaravelInvite\Invite;
 
 /**
  * Trait CanBookmark.
  */
-trait CanBookmark
+trait CanInvite
 {
     /**
-     * Follow an item or items.
+     * Invite an item or items.
      *
      * @param int|array|\Illuminate\Database\Eloquent\Model $targets
      * @param string                                        $class
@@ -30,7 +30,7 @@ trait CanBookmark
      */
     public function bookmark($targets, $class = __CLASS__)
     {
-        return Follow::attachRelations($this, 'bookmarks', $targets, $class);
+        return Invite::attachRelations($this, 'bookmarks', $targets, $class);
     }
 
     /**
@@ -43,7 +43,7 @@ trait CanBookmark
      */
     public function unbookmark($targets, $class = __CLASS__)
     {
-        return Follow::detachRelations($this, 'bookmarks', $targets, $class);
+        return Invite::detachRelations($this, 'bookmarks', $targets, $class);
     }
 
     /**
@@ -58,7 +58,7 @@ trait CanBookmark
      */
     public function toggleBookmark($targets, $class = __CLASS__)
     {
-        return Follow::toggleRelations($this, 'bookmarks', $targets, $class);
+        return Invite::toggleRelations($this, 'bookmarks', $targets, $class);
     }
 
     /**
@@ -71,7 +71,7 @@ trait CanBookmark
      */
     public function hasBookmarked($target, $class = __CLASS__)
     {
-        return Follow::isRelationExists($this, 'bookmarks', $target, $class);
+        return Invite::isRelationExists($this, 'bookmarks', $target, $class);
     }
 
     /**
@@ -83,8 +83,8 @@ trait CanBookmark
      */
     public function bookmarks($class = __CLASS__)
     {
-        return $this->morphedByMany($class, config('follow.morph_prefix'), config('follow.followable_table'))
-                    ->wherePivot('relation', '=', Follow::RELATION_BOOKMARK)
-                    ->withPivot('followable_type', 'relation', 'created_at');
+        return $this->morphedByMany($class, config('invite.morph_prefix'), config('invite.inviteable_table'))
+                    ->wherePivot('relation', '=', Invite::RELATION_BOOKMARK)
+                    ->withPivot('inviteable_type', 'relation', 'created_at');
     }
 }

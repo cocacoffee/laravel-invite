@@ -1,26 +1,26 @@
 <?php
 
 /*
- * This file is part of the overtrue/laravel-follow
+  * This file is part of the cocacoffee/laravel-invite
  *
- * (c) overtrue <i@overtrue.me>
+ * (c) SanKnight <cocacoffee@vip.qq.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
-namespace Overtrue\LaravelFollow\Events;
+namespace SanKnight\LaravelInvite\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Overtrue\LaravelFollow\Follow;
+use SanKnight\LaravelInvite\Invite;
 
 /**
  * Class Event.
  *
- * @author overtrue <i@overtrue.me>
+ * @author SanKnight <cocacoffee@vip.qq.com>
  */
 class Event
 {
@@ -38,9 +38,9 @@ class Event
      * Event constructor.
      *
      * @param \Illuminate\Database\Eloquent\Model   $causer
-     * @param \Overtrue\LaravelFollow\Events\string $relation
+     * @param \LaravelInvite\Events\string $relation
      * @param int|array                             $targets
-     * @param \Overtrue\LaravelFollow\Events\string $class
+     * @param \LaravelInvite\Events\string $class
      */
     public function __construct(Model $causer, string $relation, $targets, string $class)
     {
@@ -52,7 +52,7 @@ class Event
 
     public function getRelationType()
     {
-        return Follow::RELATION_TYPES[$this->relation];
+        return Invite::RELATION_TYPES[$this->relation];
     }
 
     public function getTargetsCollection()
