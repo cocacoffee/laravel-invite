@@ -2,9 +2,7 @@
 
 /*
  * This file is part of the cocacoffee/laravel-invite
- *
  * (c) SanKnight <cocacoffee@vip.qq.com>
- *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
@@ -12,66 +10,83 @@
 namespace SanKnight\LaravelInvite\Traits;
 
 use SanKnight\LaravelInvite\Invite;
+use Illuminate\Support\Collection;
 
 /**
- * Trait CanBookmark.
+ * Trait CanInvite.
  */
 trait CanInvite
 {
     /**
-     * Invite an item or items.
+     * The variables for invite.
      *
-     * @param int|array|\Illuminate\Database\Eloquent\Model $targets
-     * @param string                                        $class
-     *
-     * @throws \Exception
-     *
-     * @return array
+     * @var \Illuminate\Support\Collection
      */
-    public function bookmark($targets, $class = __CLASS__)
+    protected $invitingVariables;
+
+    /**
+     * Get the variable.
+     *
+     * @param string $name
+     */
+    public function getInvitingVariables($name)
     {
-        return Invite::attachRelations($this, 'bookmarks', $targets, $class);
+        if ($name !== null) {
+            return $this->invitingVariables->get($name);
+        }
+        
+        return $this->invitingVariables;
     }
 
     /**
-     * Unbookmark an item or items.
+     * Get the variables.
      *
-     * @param int|array|\Illuminate\Database\Eloquent\Model $targets
-     * @param string                                        $class
-     *
-     * @return array
+     * @param array $data
      */
-    public function unbookmark($targets, $class = __CLASS__)
+    public function setInvitingVariables(array $data)
     {
-        return Invite::detachRelations($this, 'bookmarks', $targets, $class);
-    }
-
-    /**
-     * Toggle bookmark an item or items.
-     *
-     * @param int|array|\Illuminate\Database\Eloquent\Model $targets
-     * @param string                                        $class
-     *
-     * @throws \Exception
-     *
-     * @return array
-     */
-    public function toggleBookmark($targets, $class = __CLASS__)
-    {
-        return Invite::toggleRelations($this, 'bookmarks', $targets, $class);
+        $this->invitingVariables = collect($data);
     }
 
     /**
      * Check if user is bookmarked given item.
      *
      * @param int|array|\Illuminate\Database\Eloquent\Model $target
-     * @param string                                        $class
+     * @param string $class
      *
      * @return bool
      */
-    public function hasBookmarked($target, $class = __CLASS__)
+    public function hasInvited($target, $class = __CLASS__)
     {
-        return Invite::isRelationExists($this, 'bookmarks', $target, $class);
+        return Invite::isRelationExists($this, $target, $class) !== false;
+    }
+
+    /**
+     * Invite an item or items.
+     *
+     * @param int|array|\Illuminate\Database\Eloquent\Model $targets
+     * @param string $class
+     *
+     * @throws \Exception
+     *
+     * @return array
+     */
+    public function invite($targets, $class = __CLASS__)
+    {
+        return Invite::attachRelations($this, $targets, $class);
+    }
+
+    /**
+     * UnInvite an item or items.
+     *
+     * @param int|array|\Illuminate\Database\Eloquent\Model $targets
+     * @param string $class
+     *
+     * @return array
+     */
+    public function cancelInvitation($targets, $class = __CLASS__)
+    {
+        return Invite::detachRelations($this, $targets, $class);
     }
 
     /**
@@ -81,10 +96,8 @@ trait CanInvite
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function bookmarks($class = __CLASS__)
+    public function invitations($class = __CLASS__)
     {
-        return $this->morphedByMany($class, config('invite.morph_prefix'), config('invite.inviteable_table'))
-                    ->wherePivot('relation', '=', Invite::RELATION_BOOKMARK)
-                    ->withPivot('inviteable_type', 'relation', 'created_at');
+        return $this->morphedByMany($class, config('invite.morph_prefix'), config('invite.inviteable_table'))->wherePivot('subject', '=', $this->getInvitingVariables('subject'))->withPivot('subject', 'status', 'created_at');
     }
 }

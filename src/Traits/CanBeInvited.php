@@ -2,43 +2,103 @@
 
 /*
  * This file is part of the cocacoffee/laravel-invite
- *
  * (c) SanKnight <cocacoffee@vip.qq.com>
- *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
 namespace SanKnight\LaravelInvite\Traits;
 
+use App\Models\User;
 use SanKnight\LaravelInvite\Invite;
+use Illuminate\Support\Collection;
+use SanKnight\LaravelInvite\Events\InvitationAccepted;
+use SanKnight\LaravelInvite\Events\InvitationDeclined;
 
 /**
- * Trait CanBeBookmarked.
+ * Trait CanBeInvited.
  */
 trait CanBeInvited
 {
+    
     /**
-     * Check if user is bookmarked by given user.
+     * The variables for invite.
      *
-     * @param int $user
-     *
-     * @return bool
+     * @var \Illuminate\Support\Collection
      */
-    public function isBookmarkedBy($user)
+    protected $applyingVariables;
+
+    /**
+     * Get the variable.
+     *
+     * @param string $name
+     */
+    public function getApplyingVariables($name)
     {
-        return Invite::isRelationExists($this, 'bookmarkers', $user);
+        if ($name !== null) {
+            return $this->applyingVariables->get($name);
+        }
+        
+        return $this->applyingVariables;
     }
 
     /**
-     * Return bookmarkers.
+     * Get the variables.
+     *
+     * @param array $data
+     */
+    public function setApplyingVariables(array $data)
+    {
+        $this->applyingVariables = collect($data);
+    }
+
+    /**
+     * Check if user is invited by given user.
+     *
+     * @param \App\Models\User $user
+     *
+     * @return bool
+     */
+    public function isInvitedBy(User $user)
+    {
+        return Invite::isRelationExists($this, $user);
+    }
+
+    /**
+     * 接受邀请
+     */
+    public function acceptInvitation(User $user)
+    {
+        if (false === \event(new InvitationAccepted($this, $this->getApplyingVariables('subject'), $user))) {
+            return false;
+        }
+        
+        return $this->inviters()->updateExistingPivot($user->id, [
+            'status' => $this->getApplyingVariables('status')
+        ]);
+    }
+
+    /**
+     * 拒绝邀请
+     */
+    public function declineInvitation(User $user)
+    {
+        if (false === \event(new InvitationDeclined($this, $this->getApplyingVariables('subject'), $user))) {
+            return false;
+        }
+        
+        return $this->invitations()->updateExistingPivot($user->id, [
+            'status' => $this->getApplyingVariables('status')
+        ]);
+    }
+
+    /**
+     * Return inviters.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function bookmarkers()
+    public function inviters()
     {
-        return $this->morphToMany(config('invite.user_model'), config('invite.morph_prefix'), config('invite.inviteable_table'))
-                    ->wherePivot('relation', '=', Invite::RELATION_BOOKMARK)
-                    ->withPivot('inviteable_type', 'relation', 'created_at');
+        return $this->morphToMany(config('invite.user_model'), config('invite.morph_prefix'), config('invite.inviteable_table'))->wherePivot('subject', '=', $this->getApplyingVariables('subject'))->withPivot('inviteable_type', 'subject', 'status', 'created_at');
     }
 }

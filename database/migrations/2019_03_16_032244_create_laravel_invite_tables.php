@@ -24,9 +24,10 @@ class CreateLaravelInviteTables extends Migration
             $table->unsignedInteger($userForeignKey);
             $table->unsignedInteger('inviteable_id');
             $table->string('inviteable_type')->index();
-            $table->string('relation')->comment('friend');
-            $table->softDeletes();
+            $table->string('subject')->comment('friend');
+            $table->unsignedTinyInteger('status');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign($userForeignKey)
                 ->references(config('invite.users_table_primary_key', 'id'))
