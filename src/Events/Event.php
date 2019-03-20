@@ -25,7 +25,7 @@ class Event
     
     public $causer;
     
-    public $relation;
+    public $subject;
     
     public $targets;
 
@@ -36,10 +36,10 @@ class Event
      * @param string $relation
      * @param int|array $targets
      */
-    public function __construct(Model $causer, string $relation, $targets)
+    public function __construct(Model $causer, string $subject, $targets)
     {
         $this->causer = $causer;
-        $this->relation = $relation;
+        $this->subject = $subject;
         $this->targets = $targets;
     }
 

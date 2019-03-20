@@ -87,7 +87,7 @@ trait CanBeInvited
             return false;
         }
         
-        return $this->invitations()->updateExistingPivot($user->id, [
+        return $this->inviters()->updateExistingPivot($user->id, [
             'status' => $this->getApplyingVariables('status')
         ]);
     }
