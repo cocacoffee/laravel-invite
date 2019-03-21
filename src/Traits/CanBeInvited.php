@@ -65,9 +65,9 @@ trait CanBeInvited
     }
 
     /**
-     * 接受邀请
+     * 接受/同意
      */
-    public function acceptInvitation(User $user)
+    public function accept(User $user)
     {
         if (false === \event(new InvitationAccepted($this, $this->getSkVariables('subject'), $user))) {
             return false;
@@ -79,9 +79,9 @@ trait CanBeInvited
     }
 
     /**
-     * 拒绝邀请
+     * 拒绝
      */
-    public function declineInvitation(User $user)
+    public function decline(User $user)
     {
         if (false === \event(new InvitationDeclined($this, $this->getSkVariables('subject'), $user))) {
             return false;

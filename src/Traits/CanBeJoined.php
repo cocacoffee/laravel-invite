@@ -59,15 +59,15 @@ trait CanBeJoined
      *
      * @return bool
      */
-    public function isInvitedBy(User $user)
+    public function isJoinedBy(User $user)
     {
         return Invite::isRelationExists($this, 'joiners', $user);
     }
 
     /**
-     * 接受邀请
+     * 接受/同意
      */
-    public function acceptInvitation(User $user)
+    public function accept(User $user)
     {
         if (false === \event(new InvitationAccepted($this, $this->getSkVariables('subject'), $user))) {
             return false;
@@ -79,15 +79,15 @@ trait CanBeJoined
     }
 
     /**
-     * 拒绝邀请
+     * 拒绝/不通过
      */
-    public function declineInvitation(User $user)
+    public function decline(User $user)
     {
         if (false === \event(new InvitationDeclined($this, $this->getSkVariables('subject'), $user))) {
             return false;
         }
         
-        return $this->inviters()->updateExistingPivot($user->id, [
+        return $this->joiners()->updateExistingPivot($user->id, [
             'status' => $this->getSkVariables('status')
         ]);
     }
