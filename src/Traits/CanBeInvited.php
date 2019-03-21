@@ -61,7 +61,7 @@ trait CanBeInvited
      */
     public function isInvitedBy(User $user)
     {
-        return Invite::isRelationExists($this, $user);
+        return Invite::isRelationExists($this, 'inviters', $user);
     }
 
     /**
@@ -69,12 +69,12 @@ trait CanBeInvited
      */
     public function acceptInvitation(User $user)
     {
-        if (false === \event(new InvitationAccepted($this, $this->getApplyingVariables('subject'), $user))) {
+        if (false === \event(new InvitationAccepted($this, $this->getSkVariables('subject'), $user))) {
             return false;
         }
         
         return $this->inviters()->updateExistingPivot($user->id, [
-            'status' => $this->getApplyingVariables('status')
+            'status' => $this->getSkVariables('status')
         ]);
     }
 
@@ -83,12 +83,12 @@ trait CanBeInvited
      */
     public function declineInvitation(User $user)
     {
-        if (false === \event(new InvitationDeclined($this, $this->getApplyingVariables('subject'), $user))) {
+        if (false === \event(new InvitationDeclined($this, $this->getSkVariables('subject'), $user))) {
             return false;
         }
         
         return $this->inviters()->updateExistingPivot($user->id, [
-            'status' => $this->getApplyingVariables('status')
+            'status' => $this->getSkVariables('status')
         ]);
     }
 

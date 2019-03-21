@@ -58,7 +58,7 @@ trait CanJoin
      */
     public function hasJoined($target, $class = __CLASS__)
     {
-        return Invite::isRelationExists($this, $target, $class) !== false;
+        return Invite::isRelationExists($this, 'joins', $target, $class) !== false;
     }
 
     /**
@@ -73,7 +73,7 @@ trait CanJoin
      */
     public function joining($targets, $class = __CLASS__)
     {
-        return Invite::attachRelations($this, $targets, $class);
+        return Invite::attachRelations($this, 'joins', $targets, $class);
     }
 
     /**
@@ -86,7 +86,7 @@ trait CanJoin
      */
     public function unJoined($targets, $class = __CLASS__)
     {
-        return Invite::detachRelations($this, $targets, $class);
+        return Invite::detachRelations($this, 'joins', $targets, $class);
     }
 
     /**

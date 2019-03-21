@@ -23,29 +23,31 @@ use stdClass;
 class Invite
 {
     use SoftDeletes;
-    
+
     /**
      *
      * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string $relation
      * @param array|string|\Illuminate\Database\Eloquent\Model $target
      * @param string $class
      *
      * @return bool
      */
-    public static function isRelationExists(Model $model, $target, $class = null)
+    public static function isRelationExists(Model $model, string $relation, $target, $class = null)
     {
         $target = self::formatTargets($target, $class ?  : config('invite.user_model'));
         
-        if ($model->relationLoaded('invitations')) {
-            return $model->invitations()->where('id', head($target->ids))->isNotEmpty();
+        if ($model->relationLoaded($relation)) {
+            return $model->{$relation}->where('id', head($target->ids))->isNotEmpty();
         }
         
-        return $model->invitations($target->classname)->where('id', head($target->ids))->exists();
+        return $model->{$relation}($target->classname)->where('id', head($target->ids))->exists();
     }
 
     /**
      *
      * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string $relation
      * @param array|string|\Illuminate\Database\Eloquent\Model $targets
      * @param string $class
      *
@@ -53,34 +55,35 @@ class Invite
      *
      * @return array
      */
-    public static function attachRelations(Model $model, $targets, $class)
+    public static function attachRelations(Model $model, string $relation, $targets, $class)
     {
         $targets = self::attachPivotsFromRelation($model, $targets, $class);
         
-        if (false === \event(new InvitationAttached($model, $model->getInvitingVariables('subject'), $targets))) {
+        if (false === \event(new InvitationAttached($model, $model->getSkVariables('subject'), $targets))) {
             return false;
         }
         
-        return $model->invitations($targets->classname)->sync($targets->targets, false);
+        return $model->{$relation}($targets->classname)->sync($targets->targets, false);
     }
 
     /**
      *
      * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string $relation
      * @param array|string|\Illuminate\Database\Eloquent\Model $targets
      * @param string $class
      *
      * @return array
      */
-    public static function detachRelations(Model $model, $targets, $class)
+    public static function detachRelations(Model $model, string $relation, $targets, $class)
     {
         $targets = self::formatTargets($targets, $class);
         
-        if (false === \event(new InvitationCancelled($model, $model->getInvitingVariables('subject'), $targets))) {
+        if (false === \event(new InvitationCancelled($model, $model->getSkVariables('subject'), $targets))) {
             return false;
         }
         
-        return $model->invitations($targets->classname)->detach($targets->ids);
+        return $model->{$relation}($targets->classname)->detach($targets->ids);
     }
 
     /**

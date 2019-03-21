@@ -58,7 +58,7 @@ trait CanInvite
      */
     public function hasInvited($target, $class = __CLASS__)
     {
-        return Invite::isRelationExists($this, $target, $class) !== false;
+        return Invite::isRelationExists($this, 'invitations', $target, $class) !== false;
     }
 
     /**
@@ -73,7 +73,7 @@ trait CanInvite
      */
     public function invite($targets, $class = __CLASS__)
     {
-        return Invite::attachRelations($this, $targets, $class);
+        return Invite::attachRelations($this, 'invitations', $targets, $class);
     }
 
     /**
@@ -86,7 +86,7 @@ trait CanInvite
      */
     public function uninvite($targets, $class = __CLASS__)
     {
-        return Invite::detachRelations($this, $targets, $class);
+        return Invite::detachRelations($this, 'invitations', $targets, $class);
     }
 
     /**
