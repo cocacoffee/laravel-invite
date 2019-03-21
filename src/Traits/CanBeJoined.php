@@ -11,7 +11,6 @@ namespace Sknight\LaravelInvite\Traits;
 
 use App\Models\User;
 use Sknight\LaravelInvite\Invite;
-use Illuminate\Support\Collection;
 use Sknight\LaravelInvite\Events\InvitationAccepted;
 use Sknight\LaravelInvite\Events\InvitationDeclined;
 
@@ -20,38 +19,6 @@ use Sknight\LaravelInvite\Events\InvitationDeclined;
  */
 trait CanBeJoined
 {
-    
-    /**
-     * The variables for join.
-     *
-     * @var \Illuminate\Support\Collection
-     */
-    protected $skVariables;
-
-    /**
-     * Get the variable.
-     *
-     * @param string $name
-     */
-    public function getSkVariables($name)
-    {
-        if ($name !== null) {
-            return $this->skVariables->get($name);
-        }
-        
-        return $this->skVariables;
-    }
-
-    /**
-     * Get the variables.
-     *
-     * @param array $data
-     */
-    public function setSkVariables(array $data)
-    {
-        $this->skVariables = collect($data);
-    }
-
     /**
      * Check if user is invited by given user.
      *

@@ -10,44 +10,12 @@
 namespace Sknight\LaravelInvite\Traits;
 
 use Sknight\LaravelInvite\Invite;
-use Illuminate\Support\Collection;
 
 /**
  * Trait CanInvite.
  */
 trait CanInvite
 {
-    /**
-     * The variables for invite.
-     *
-     * @var \Illuminate\Support\Collection
-     */
-    protected $skVariables;
-
-    /**
-     * Get the variable.
-     *
-     * @param string $name
-     */
-    public function getSkVariables($name)
-    {
-        if ($name !== null) {
-            return $this->skVariables->get($name);
-        }
-        
-        return $this->skVariables;
-    }
-
-    /**
-     * Get the variables.
-     *
-     * @param array $data
-     */
-    public function setSkVariables(array $data)
-    {
-        $this->skVariables = collect($data);
-    }
-
     /**
      * Check if user is bookmarked given item.
      *
