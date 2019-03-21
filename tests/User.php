@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace SanKnight\LaravelInvite\Test;
+namespace Sknight\LaravelInvite\Test;
 
 use Illuminate\Database\Eloquent\Model;
-use SanKnight\LaravelInvite\Traits\CanInvite;
-use SanKnight\LaravelInvite\Traits\CanBeInvited;
+use Sknight\LaravelInvite\Traits\CanInvite;
+use Sknight\LaravelInvite\Traits\CanBeInvited;
 
 class User extends Model
 {

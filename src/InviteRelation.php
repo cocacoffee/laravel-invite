@@ -9,12 +9,12 @@
  * with this source code in the file LICENSE.
  */
 
-namespace SanKnight\LaravelInvite;
+namespace Sknight\LaravelInvite;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use SanKnight\InvalidArgumentException;
+use Sknight\InvalidArgumentException;
 
 /**
  * Class InviteRelation.

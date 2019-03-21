@@ -18,18 +18,18 @@
     ],
     "autoload": {
         "psr-4": {
-            "SanKnight\\LaravelInvite\\": "src/"
+            "Sknight\\LaravelInvite\\": "src/"
         }
     },
     "autoload-dev": {
       "psr-4": {
-          "SanKnight\\LaravelInvite\\Test\\": "tests"
+          "Sknight\\LaravelInvite\\Test\\": "tests"
       }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "SanKnight\\LaravelInvite\\InviteServiceProvider"
+                "Sknight\\LaravelInvite\\InviteServiceProvider"
             ]
         }
     }

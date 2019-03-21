@@ -7,7 +7,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace SanKnight\LaravelInvite\Events;
+namespace Sknight\LaravelInvite\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Database\Eloquent\Model;

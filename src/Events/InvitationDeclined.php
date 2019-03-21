@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace SanKnight\LaravelInvite\Events;
+namespace Sknight\LaravelInvite\Events;
 
 /**
  * Class RelationToggled.

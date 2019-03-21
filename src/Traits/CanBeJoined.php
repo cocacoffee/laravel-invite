@@ -16,13 +16,13 @@ use Sknight\LaravelInvite\Events\InvitationAccepted;
 use Sknight\LaravelInvite\Events\InvitationDeclined;
 
 /**
- * Trait CanBeInvited.
+ * Trait CanBeJoined.
  */
-trait CanBeInvited
+trait CanBeJoined
 {
     
     /**
-     * The variables for invite.
+     * The variables for join.
      *
      * @var \Illuminate\Support\Collection
      */
@@ -93,11 +93,11 @@ trait CanBeInvited
     }
 
     /**
-     * Return inviters.
+     * Return joiners.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function inviters()
+    public function joiners()
     {
         return $this->morphToMany(config('invite.user_model'), config('invite.morph_prefix'), config('invite.inviteable_table'))->wherePivot('subject', '=', $this->getSkVariables('subject'))->withPivot('inviteable_type', 'subject', 'status', 'created_at');
     }

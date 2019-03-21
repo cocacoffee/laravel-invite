@@ -13,9 +13,9 @@ use Sknight\LaravelInvite\Invite;
 use Illuminate\Support\Collection;
 
 /**
- * Trait CanInvite.
+ * Trait CanJoin.
  */
-trait CanInvite
+trait CanJoin
 {
     /**
      * The variables for invite.
@@ -49,20 +49,20 @@ trait CanInvite
     }
 
     /**
-     * Check if user is bookmarked given item.
+     * Check if user is joined given item.
      *
      * @param int|array|\Illuminate\Database\Eloquent\Model $target
      * @param string $class
      *
      * @return bool
      */
-    public function hasInvited($target, $class = __CLASS__)
+    public function hasJoined($target, $class = __CLASS__)
     {
         return Invite::isRelationExists($this, $target, $class) !== false;
     }
 
     /**
-     * Invite an item or items.
+     * Join an item or items.
      *
      * @param int|array|\Illuminate\Database\Eloquent\Model $targets
      * @param string $class
@@ -71,20 +71,20 @@ trait CanInvite
      *
      * @return array
      */
-    public function invite($targets, $class = __CLASS__)
+    public function joining($targets, $class = __CLASS__)
     {
         return Invite::attachRelations($this, $targets, $class);
     }
 
     /**
-     * UnInvite an item or items.
+     * Unjoin an item or items.
      *
      * @param int|array|\Illuminate\Database\Eloquent\Model $targets
      * @param string $class
      *
      * @return array
      */
-    public function uninvite($targets, $class = __CLASS__)
+    public function unJoined($targets, $class = __CLASS__)
     {
         return Invite::detachRelations($this, $targets, $class);
     }
@@ -96,7 +96,7 @@ trait CanInvite
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function invitations($class = __CLASS__)
+    public function joins($class = __CLASS__)
     {
         return $this->morphedByMany($class, config('invite.morph_prefix'), config('invite.inviteable_table'))->wherePivot('subject', '=', $this->getSkVariables('subject'))->withPivot('subject', 'status', 'created_at');
     }

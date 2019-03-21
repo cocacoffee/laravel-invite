@@ -9,10 +9,10 @@
  * with this source code in the file LICENSE.
  */
 
-namespace SanKnight\LaravelInvite\Test;
+namespace Sknight\LaravelInvite\Test;
 
 use Illuminate\Database\Eloquent\Model;
-use SanKnight\LaravelInvite\Invite;
+use Sknight\LaravelInvite\Invite;
 
 class InviteTest extends TestCase
 {

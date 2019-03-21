@@ -7,14 +7,14 @@
  * with this source code in the file LICENSE.
  */
 
-namespace SanKnight\LaravelInvite;
+namespace Sknight\LaravelInvite;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use SanKnight\LaravelInvite\Events\InvitationAttached;
-use SanKnight\LaravelInvite\Events\InvitationCancelled;
+use Sknight\LaravelInvite\Events\InvitationAttached;
+use Sknight\LaravelInvite\Events\InvitationCancelled;
 use stdClass;
 
 /**
@@ -24,8 +24,6 @@ class Invite
 {
     use SoftDeletes;
     
-    const INVITATION_FRIEND = 'friends';
-
     /**
      *
      * @param \Illuminate\Database\Eloquent\Model $model
@@ -98,8 +96,8 @@ class Invite
     public static function attachPivotsFromRelation(Model $model, $targets, $class)
     {
         return self::formatTargets($targets, $class, [
-            'subject' => $model->getInvitingVariables('subject'),
-            'status' => $model->getInvitingVariables('status'),
+            'subject' => $model->getSkVariables('subject'),
+            'status' => $model->getSkVariables('status'),
             'created_at' => Carbon::now()->format(config('invite.date_format', 'Y-m-d H:i:s'))
         ]);
     }
